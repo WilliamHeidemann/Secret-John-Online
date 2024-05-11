@@ -23,7 +23,7 @@ public class Player : NetworkBehaviour
             PlayerName.Value = defaultName;
         }
         
-        FindFirstObjectByType<NamesManager>()?.SetDefaultName(defaultName);
+        FindFirstObjectByType<NamesManager>()?.SetNameTag(defaultName);
         UpdateNameDisplays();
 
         PlayerName.OnValueChanged += (value, newValue) => UpdateNameDisplays();

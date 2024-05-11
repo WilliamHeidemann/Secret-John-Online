@@ -11,9 +11,9 @@ public class NamesManager : NetworkBehaviour
     [SerializeField] private TMP_InputField inputField;
     [SerializeField] private List<TextMeshProUGUI> names;
 
-    public void SetDefaultName(string defaultName)
+    public void SetNameTag(string nameTag)
     {
-        inputField.text = defaultName;
+        inputField.text = nameTag;
     }
     
     public void SetName()
