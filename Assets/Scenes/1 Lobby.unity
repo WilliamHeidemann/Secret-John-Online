@@ -922,6 +922,18 @@ PrefabInstance:
       propertyPath: m_Text
       value: Player 1
       objectReference: {fileID: 0}
+    - target: {fileID: 7062720211802695352, guid: 337c920fabd78f645a16a03f6e07a459, type: 3}
+      propertyPath: m_OnEndEdit.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 898419130}
+    - target: {fileID: 7062720211802695352, guid: 337c920fabd78f645a16a03f6e07a459, type: 3}
+      propertyPath: m_OnEndEdit.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: SetName
+      objectReference: {fileID: 0}
+    - target: {fileID: 7062720211802695352, guid: 337c920fabd78f645a16a03f6e07a459, type: 3}
+      propertyPath: m_OnEndEdit.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: NamesManager, Assembly-CSharp
+      objectReference: {fileID: 0}
     - target: {fileID: 7821182931081831052, guid: 337c920fabd78f645a16a03f6e07a459, type: 3}
       propertyPath: m_text
       value: "Player 1\u200B"
@@ -1216,6 +1228,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 898419129}
+  - component: {fileID: 898419131}
   - component: {fileID: 898419130}
   m_Layer: 0
   m_Name: Player Names Manager
@@ -1251,6 +1264,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bcd98f5cbea001d42b28ddce22a206a8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  inputField: {fileID: 1253715011}
   names:
   - {fileID: 203909896006643284}
   - {fileID: 1874141362}
@@ -1262,6 +1276,27 @@ MonoBehaviour:
   - {fileID: 607946645}
   - {fileID: 1775899460}
   - {fileID: 860955478}
+--- !u!114 &898419131
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 898419128}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  GlobalObjectIdHash: 626152038
+  InScenePlacedSourceGlobalObjectIdHash: 0
+  AlwaysReplicateAsRoot: 0
+  SynchronizeTransform: 1
+  ActiveSceneSynchronization: 0
+  SceneMigrationSynchronization: 1
+  SpawnWithObservers: 1
+  DontDestroyWithOwner: 0
+  AutoObjectParentSync: 1
 --- !u!1 &1077569002
 GameObject:
   m_ObjectHideFlags: 0
@@ -1330,6 +1365,17 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1253715011 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7062720211802695352, guid: 337c920fabd78f645a16a03f6e07a459, type: 3}
+  m_PrefabInstance: {fileID: 630197528}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2da0c512f12947e489f739169773d7ca, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1293448045
 GameObject:
   m_ObjectHideFlags: 0

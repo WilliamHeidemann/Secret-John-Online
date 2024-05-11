@@ -2,12 +2,13 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
+using Unity.Collections;
 using Unity.Netcode;
 using UnityEngine;
 
 public class Player : NetworkBehaviour
 {
-    // private NetworkVariable<string> playerName = new NetworkVariable<string>();
+    public readonly NetworkVariable<FixedString32Bytes> PlayerName = new();
     private void Awake()
     {
         DontDestroyOnLoad(gameObject);
@@ -15,16 +16,24 @@ public class Player : NetworkBehaviour
 
     public override void OnNetworkSpawn()
     {
-        print("Spawned!");
-        print("Is host: " + NetworkManager.Singleton.IsHost);
-        print("Is client: " + NetworkManager.Singleton.IsClient);
-        print("Client ID: " + NetworkManager.Singleton.LocalClientId);
+        const string defaultName = "Unknown Player";
+
+        if (IsServer)
+        {
+            PlayerName.Value = defaultName;
+        }
+        
+        FindFirstObjectByType<NamesManager>()?.SetDefaultName(defaultName);
+        UpdateNameDisplays();
+
+        PlayerName.OnValueChanged += (value, newValue) => UpdateNameDisplays();
     }
 
-    public void UpdateName()
+    private static void UpdateNameDisplays() => FindFirstObjectByType<NamesManager>()?.UpdateNames();
+
+    [Rpc(SendTo.Server)]
+    public void ChangeNameRpc(string newName)
     {
-        print("Updating name");
-        var playerId = NetworkManager.Singleton.LocalClientId;
-        NamesManager.Instance.SetNameRequestRpc(playerId, "Player Name");
+        PlayerName.Value = newName;
     }
 }

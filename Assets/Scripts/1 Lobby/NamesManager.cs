@@ -1,57 +1,34 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using TMPro;
 using Unity.Netcode;
 using UnityEngine;
 
 public class NamesManager : NetworkBehaviour
 {
+    [SerializeField] private TMP_InputField inputField;
     [SerializeField] private List<TextMeshProUGUI> names;
-    public static NamesManager Instance;
 
-    private void Awake()
+    public void SetDefaultName(string defaultName)
     {
-        Instance = this;
+        inputField.text = defaultName;
     }
-
-    [Rpc(SendTo.Server)]
-    public void SetNameRequestRpc(ulong playerId, string playerName)
+    
+    public void SetName()
     {
-        SetNameRpc(playerId, playerName);
-    }
-
-    [Rpc(SendTo.Everyone)]
-    public void SetNameRpc(ulong playerId, string playerName)
-    {
-        print($"Finding player with id {playerId} within {NetworkManager.Singleton.ConnectedClientsIds.Count} ids");
-        var ids = NetworkManager.Singleton.ConnectedClientsIds;
-        for (var i = 0; i < ids.Count; i++)
-        {
-            if (playerId == ids[i])
-            {
-                print("Found");
-                names[i].text = playerName;
-            }
-        }
-    }
-
-    private void Update()
-    {
-        if (Input.GetMouseButtonDown(0))
-        {
-            print("Updating names");
-            UpdateNames();
-        }
+        var input = inputField.text;
+        var players = FindObjectsByType<Player>(FindObjectsSortMode.None);
+        players.First(player => player.IsOwner).ChangeNameRpc(input);
     }
     
     public void UpdateNames()
     {
-        var players = NetworkManager.Singleton.ConnectedClientsIds;
-        for (int i = 0; i < players.Count; i++)
+        var players = FindObjectsByType<Player>(FindObjectsSortMode.None);
+        for (int i = 0; i < players.Length; i++)
         {
-            names[i].text = "Player " + players[i];
+            names[i].text = players[i].PlayerName.Value.ToString();
         }
     }
-    
 }
