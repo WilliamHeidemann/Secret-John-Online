@@ -41,12 +41,15 @@ public class JoinButton : MonoBehaviour
         var code = inputField.text.ToUpper();
         inputField.text = "Join Game";
         arrow.SetActive(false);
-        var allocation = await RelayService.Instance.JoinAllocationAsync(code);
-        if (allocation == null)
+        try
         {
-            print("allocation was null");
-            return;
+            var allocation = await RelayService.Instance.JoinAllocationAsync(code);
+            gameConnector.JoinGameAsClient(allocation, code);
         }
-        gameConnector.JoinGameAsClient(allocation, code);
+        catch (Exception e)
+        {
+            print(e);
+        }
+
     }
 }
