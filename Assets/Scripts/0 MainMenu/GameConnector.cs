@@ -11,13 +11,14 @@ using Unity.Services.Relay;
 using Unity.Services.Relay.Models;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.Serialization;
 
 public class GameConnector : MonoBehaviour
 {
     public static string JoinCode = string.Empty;
     private UnityTransport transport;
     [SerializeField] private QrJoin qrJoinButton;
-    [SerializeField] private InputFieldJoin inputFieldInputFieldJoin;
+    [SerializeField] private InputFieldJoin inputFieldJoin;
 
     private async void Awake()
     {
@@ -85,5 +86,6 @@ public class GameConnector : MonoBehaviour
     {
         qrJoinButton.gameObject.SetActive(true);
         qrJoinButton.SetGamePin(code);
+        inputFieldJoin.gameObject.SetActive(false);
     }
 }
