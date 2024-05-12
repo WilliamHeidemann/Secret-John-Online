@@ -16,7 +16,7 @@ public class QRGenerator : MonoBehaviour
     private readonly Color32 beige = new Color32(246,226,194,255);
     private void Start()
     {
-        GenerateQrCode($"https://game-dev-blog-xi.vercel.app/QR-game/{GameConnector.JoinCode}", 256, 256);
+        GenerateQrCode($"https://game-dev-blog-xi.vercel.app/QR-game?pin={GameConnector.JoinCode}", 256, 256);
     }
 
     private void GenerateQrCode(string data, int width, int height)

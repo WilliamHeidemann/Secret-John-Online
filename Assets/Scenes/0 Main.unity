@@ -119,6 +119,17 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!114 &325140741 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 692386109601482030, guid: e7a93fbc56d92a842856b65e83c66cf6, type: 3}
+  m_PrefabInstance: {fileID: 354192394}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &354192394
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -278,6 +289,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   gameConnector: {fileID: 2132536541}
+  buttonText: {fileID: 325140741}
 --- !u!224 &422983942 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 8423588810596167371, guid: 337c920fabd78f645a16a03f6e07a459, type: 3}
@@ -1043,7 +1055,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   qrJoinButton: {fileID: 354192397}
-  inputFieldInputFieldJoin: {fileID: 422983945}
+  inputFieldJoin: {fileID: 422983945}
   lobbySceneIndex: 1
 --- !u!1001 &1432960503608770549
 PrefabInstance:
@@ -1193,6 +1205,10 @@ PrefabInstance:
     - target: {fileID: 6848311662316560609, guid: 337c920fabd78f645a16a03f6e07a459, type: 3}
       propertyPath: m_Name
       value: Input Join
+      objectReference: {fileID: 0}
+    - target: {fileID: 6848311662316560609, guid: 337c920fabd78f645a16a03f6e07a459, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7062720211802695352, guid: 337c920fabd78f645a16a03f6e07a459, type: 3}
       propertyPath: m_OnDeselect.m_PersistentCalls.m_Calls.Array.size
