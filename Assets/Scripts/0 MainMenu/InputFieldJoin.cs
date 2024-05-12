@@ -2,10 +2,9 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
-using Unity.Services.Relay;
 using UnityEngine;
 
-public class JoinButton : MonoBehaviour
+public class InputFieldJoin : MonoBehaviour
 {
     [SerializeField] private TMP_InputField inputField;
     [SerializeField] private GameObject arrow;
@@ -36,20 +35,11 @@ public class JoinButton : MonoBehaviour
         arrow.SetActive(inputField.text.Length == 6);
     }
 
-    public async void TryJoin()
+    public void TryJoinInputField()
     {
         var code = inputField.text.ToUpper();
         inputField.text = "Join Game";
         arrow.SetActive(false);
-        try
-        {
-            var allocation = await RelayService.Instance.JoinAllocationAsync(code);
-            gameConnector.JoinGameAsClient(allocation, code);
-        }
-        catch (Exception e)
-        {
-            print(e);
-        }
-
+        gameConnector.TryJoin(code);
     }
 }

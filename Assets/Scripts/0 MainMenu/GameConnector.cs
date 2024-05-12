@@ -16,6 +16,8 @@ public class GameConnector : MonoBehaviour
 {
     public static string JoinCode = string.Empty;
     private UnityTransport transport;
+    [SerializeField] private QrJoin qrJoinButton;
+    [SerializeField] private InputFieldJoin inputFieldInputFieldJoin;
 
     private async void Awake()
     {
@@ -25,9 +27,18 @@ public class GameConnector : MonoBehaviour
 
     private async Task Authenticate()
     {
-        transport = FindFirstObjectByType<UnityTransport>();
-        await UnityServices.InitializeAsync();
-        await AuthenticationService.Instance.SignInAnonymouslyAsync();
+        try
+        {
+            await UnityServices.InitializeAsync();
+            await AuthenticationService.Instance.SignInAnonymouslyAsync();
+            transport = FindFirstObjectByType<UnityTransport>();
+        }
+        catch (Exception e)
+        {
+            print(e);
+            throw;
+        }
+
     }
     
     [SerializeField] private int lobbySceneIndex;
@@ -46,13 +57,33 @@ public class GameConnector : MonoBehaviour
         JoinCode = await RelayService.Instance.GetJoinCodeAsync(allocation.AllocationId);
         print(JoinCode);
     }
-    
-    public void JoinGameAsClient(JoinAllocation allocation, string code)
+
+    public async void TryJoin(string code)
+    {
+        try
+        {
+            var allocation = await RelayService.Instance.JoinAllocationAsync(code);
+            JoinGameAsClient(allocation, code);
+        }
+        catch (Exception e)
+        {
+            print(e);
+            throw;
+        }
+    }
+
+    private void JoinGameAsClient(JoinAllocation allocation, string code)
     {
         transport.SetRelayServerData(new RelayServerData(allocation, "wss"));
         transport.UseWebSockets = true;
         JoinCode = code;
         NetworkManager.Singleton.StartClient();
         SceneManager.LoadScene(lobbySceneIndex);
+    }
+
+    public void ShowQrJoinButton(string code)
+    {
+        qrJoinButton.gameObject.SetActive(true);
+        qrJoinButton.SetGamePin(code);
     }
 }
