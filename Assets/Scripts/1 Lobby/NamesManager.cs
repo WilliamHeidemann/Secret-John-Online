@@ -22,6 +22,14 @@ public class NamesManager : NetworkBehaviour
         var players = FindObjectsByType<Player>(FindObjectsSortMode.None);
         players.First(player => player.IsOwner).ChangeNameRpc(input);
     }
+
+    public void RestrictLength()
+    {
+        if (inputField.text.Length > 10)
+        {
+            inputField.text = inputField.text[..10];
+        }
+    }
     
     public void UpdateNames()
     {

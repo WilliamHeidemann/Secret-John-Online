@@ -16,7 +16,7 @@ public class Player : NetworkBehaviour
 
     public override void OnNetworkSpawn()
     {
-        const string defaultName = "Unknown Player";
+        const string defaultName = "New Player";
 
         if (IsServer)
         {

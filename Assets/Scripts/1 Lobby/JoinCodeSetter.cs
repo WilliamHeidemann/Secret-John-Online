@@ -8,6 +8,6 @@ public class JoinCodeSetter : MonoBehaviour
     [SerializeField] private TextMeshProUGUI joinCode;
     void Start()
     {
-        joinCode.text = "Join Code: " + GameConnector.JoinCode;
+        joinCode.text = GameConnector.JoinCode;
     }
 }

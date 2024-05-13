@@ -15,7 +15,7 @@ using UnityEngine.Serialization;
 
 public class GameConnector : MonoBehaviour
 {
-    public static string JoinCode = string.Empty;
+    public static string JoinCode = "ABCDEF";
     private UnityTransport transport;
     [SerializeField] private QrJoin qrJoinButton;
     [SerializeField] private InputFieldJoin inputFieldJoin;
