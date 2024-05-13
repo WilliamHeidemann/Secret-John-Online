@@ -4,8 +4,12 @@ namespace _2_Game
 {
     public class GameState
     {
-        private Dictionary<ulong, Membership> memberships = new();
-        private int enactedFascistPolicies;
-        private int enactedLiberalPolicies;
+        private Teams teams;
+        private Policies policies;
+        public GameState(IReadOnlyList<ulong> playerIds)
+        {
+            teams = new Teams(playerIds);
+            policies = new Policies();
+        }
     }
 }

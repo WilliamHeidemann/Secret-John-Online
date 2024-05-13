@@ -1,17 +1,25 @@
 ﻿namespace _2_Game
 {
-    public class Membership
+    public struct Membership
     {
-        public enum Alignment
-        {
-            Liberal,
-            Fascist 
-        }
+        public Alignment Alignment;
+        public Role Role;
 
-        public enum Role
+        public Membership(Alignment alignment, Role role)
         {
-            Hitler,
-            Member
+            Alignment = alignment;
+            Role = role;
         }
+    }
+    public enum Alignment
+    {
+        Liberal,
+        Fascist 
+    }
+
+    public enum Role
+    {
+        Hitler,
+        Member
     }
 }
