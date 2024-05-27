@@ -1,8 +1,8 @@
 ﻿namespace _2_Game
 {
-    public struct Membership
+    public class Membership
     {
-        public Alignment Alignment;
+        public readonly Alignment Alignment;
         public Role Role;
 
         public Membership(Alignment alignment, Role role)

@@ -8,24 +8,28 @@ using UnityEngine.SceneManagement;
 public class GameStarter : NetworkBehaviour
 {
     [SerializeField] private int gameSceneIndex;
+    [SerializeField] private GameObject gameStarterButton;
     
     private void Start()
     {
         if (!NetworkManager.Singleton.IsHost)
         {
-            gameObject.SetActive(false);
+            gameStarterButton.SetActive(false);
         }
     }
     
     public void StartGame()
     {
         if (!NetworkManager.Singleton.IsHost) return;
+        print("Starting game");
         StartGameRpc();
+        print("Start game called");
     }
 
-    [Rpc(SendTo.Everyone)]
+    [Rpc(SendTo.ClientsAndHost)]
     private void StartGameRpc()
     {
-        SceneManager.LoadScene(gameSceneIndex);
+        NetworkManager.Singleton.SceneManager.LoadScene("2 Game", LoadSceneMode.Single);
+        // SceneManager.LoadScene(gameSceneIndex);
     }
 }

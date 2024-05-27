@@ -47,7 +47,7 @@ public class GameConnector : MonoBehaviour
     {
         await CreateAllocation();
         NetworkManager.Singleton.StartHost();
-        SceneManager.LoadScene(lobbySceneIndex);
+        NetworkManager.Singleton.SceneManager.LoadScene("1 Lobby", LoadSceneMode.Single);
     }
 
     private async Task CreateAllocation()
@@ -79,9 +79,10 @@ public class GameConnector : MonoBehaviour
         transport.UseWebSockets = true;
         JoinCode = code;
         NetworkManager.Singleton.StartClient();
-        SceneManager.LoadScene(lobbySceneIndex);
+        NetworkManager.Singleton.SceneManager.LoadScene("1 Lobby", LoadSceneMode.Single);
     }
 
+    // Method is called via javascript in browser
     public void ShowQrJoinButton(string code)
     {
         qrJoinButton.gameObject.SetActive(true);

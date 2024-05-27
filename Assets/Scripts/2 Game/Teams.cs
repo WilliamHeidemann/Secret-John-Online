@@ -1,60 +1,52 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using UnityEngine;
 using UnityEngine.Assertions;
+using Random = UnityEngine.Random;
 
 namespace _2_Game
 {
     public class Teams
     {
-        private readonly Dictionary<ulong, Membership> memberships = new();
+        private readonly Dictionary<ulong, Membership> memberships;
 
         public Teams(IReadOnlyList<ulong> playerIds)
         {
-            // This should shuffle somewhere
-            
+            var shuffledPlayerIds = playerIds.OrderBy(x => Random.value);
             var (liberals, fascists) = LiberalsAndFascistCount(playerIds.Count);
-            var hitlerIndex = fascists + liberals - 1;
-            for (int i = 0; i < liberals; i++)
-            {
-                var liberal = new Membership(Alignment.Liberal, Role.Member);
-                memberships.Add(playerIds[i], liberal);
-            }
 
-            for (int i = liberals; i < hitlerIndex; i++)
-            {
-                var fascist = new Membership(Alignment.Fascist, Role.Member);
-                memberships.Add(playerIds[i], fascist);
-            }
+            memberships = Enumerable.Repeat(new Membership(Alignment.Liberal, Role.Member), liberals)
+                .Concat(Enumerable.Repeat(new Membership(Alignment.Fascist, Role.Member), fascists))
+                .Zip(shuffledPlayerIds, (membership, id) => (membership, id))
+                .ToDictionary(tuple => tuple.id, tuple => tuple.membership);
 
-            var hitler = new Membership(Alignment.Fascist, Role.Hitler);
-            memberships.Add(playerIds[hitlerIndex], hitler);
+            if (memberships.Count >= 3)
+            {
+                var fascist = memberships.Values.First(membership => membership.Alignment == Alignment.Fascist);
+                fascist.Role = Role.Hitler;
+            }
             
             Assert.AreEqual(memberships.Count, playerIds.Count);
         }
 
-        private (int, int) LiberalsAndFascistCount(int playerCount)
+        private static (int, int) LiberalsAndFascistCount(int playerCount)
         {
-            var offset = playerCount % 2;
-            var liberals = playerCount / 2 + offset;
-            var fascists = liberals;
-            if (liberals == fascists)
-            {
-                liberals++;
-                fascists--;
-            }
-
+            var liberals = playerCount / 2 + 1;
+            var fascists = playerCount - liberals;
             return (liberals, fascists);
         }
 
-        public Alignment GetAlignment(ulong playerId)
-        {
-            return memberships[playerId].Alignment;
-        }
+        public Alignment GetAlignment(ulong playerId) => memberships[playerId].Alignment;
 
-        public Role GetRole(ulong playerId)
-        {
-            return memberships[playerId].Role;
-        }
+        public Role GetRole(ulong playerId) => memberships[playerId].Role;
+
+        public IEnumerable<ulong> Fascists() =>
+            memberships
+                .Where(pair => pair.Value.Alignment == Alignment.Fascist)
+                .Select(pair => pair.Key);
+
+        public IEnumerable<(ulong, Alignment, Role)> AllPlayerInfo() => 
+            memberships.Select(player => (player.Key, player.Value.Alignment, player.Value.Role));
     }
 }

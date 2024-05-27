@@ -4,12 +4,12 @@ namespace _2_Game
 {
     public class GameState
     {
-        private Teams teams;
-        private Policies policies;
+        public readonly Teams Teams;
+        public readonly Policies Policies;
         public GameState(IReadOnlyList<ulong> playerIds)
         {
-            teams = new Teams(playerIds);
-            policies = new Policies();
+            Teams = new Teams(playerIds);
+            Policies = new Policies();
         }
     }
 }
