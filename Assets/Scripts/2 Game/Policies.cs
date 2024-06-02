@@ -10,6 +10,8 @@ namespace _2_Game
     {
         private readonly Stack<Alignment> drawPile;
         private readonly List<Alignment> discardPile;
+        private int enactedLiberalPolicies;
+        private int enactedFascistPolicies;
 
         public Policies()
         {
@@ -55,6 +57,12 @@ namespace _2_Game
         public void Discard(Alignment card)
         {
             discardPile.Add(card);
+        }
+
+        public void EnactPolicy(Alignment policy)
+        {
+            if (policy == Alignment.Liberal) enactedLiberalPolicies++;
+            else enactedFascistPolicies++;
         }
     }
 }

@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using Unity.Netcode;
 using UnityEngine;
@@ -23,6 +24,24 @@ namespace _2_Game
             {
                 playerInfo.SetPlayerInfo(alignment, role, RpcTarget.Single(id, RpcTargetUse.Temp));
             }
+        }
+
+        [Rpc(SendTo.Server)]
+        public void EnactPolicyRpc(Alignment policy)
+        {
+            gameState.Policies.EnactPolicy(policy);
+        }
+
+        [Rpc(SendTo.Server)]
+        public void ForwardPoliciesRpc(Alignment policy1, Alignment policy2)
+        {
+            
+        }
+
+        [Rpc(SendTo.Server)]
+        public void DiscardPolicyRpc(Alignment policy)
+        {
+            gameState.Policies.Discard(policy);
         }
     }
 }
