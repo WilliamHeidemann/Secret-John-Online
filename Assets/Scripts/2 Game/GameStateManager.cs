@@ -9,23 +9,68 @@ namespace _2_Game
     {
         [SerializeField] private PlayerInfo playerInfo;
         private GameState gameState;
+        
+        private bool isGovernmentEnacted;
+        private ulong presidentId;
+        private ulong chancellorId;
+
+        [SerializeField] private GameObject drawCanvas;
+        [SerializeField] private GameObject playersCanvas;
+        [SerializeField] private GameObject standingsCanvas;
+        [SerializeField] private GameObject historyCanvas;
+
+        private List<GameObject> AllCanvas => new()
+        {
+            drawCanvas,
+            playersCanvas,
+            standingsCanvas,
+            historyCanvas
+        };
+        
+        [SerializeField] private DrawSystem drawSystem;
     
-        private void Start()
+        public override async void OnNetworkSpawn()
         {
             if (!NetworkManager.Singleton.IsHost)
             {
                 gameObject.SetActive(false);
                 return;
             }
-
+            
+            playersCanvas.SetActive(true);
+            while (!playerInfo.IsSpawned)
+            {
+                await Awaitable.NextFrameAsync();
+            }
+            print($"Is playerinfo spawned? {playerInfo.IsSpawned}");
+            
             var playerIds = NetworkManager.Singleton.ConnectedClientsIds;
             gameState = new GameState(playerIds);
             foreach (var (id, alignment, role) in gameState.Teams.AllPlayerInfo())
             {
-                playerInfo.SetPlayerInfo(alignment, role, RpcTarget.Single(id, RpcTargetUse.Temp));
+                playerInfo.SetPlayerInfoRpc(alignment, role, RpcTarget.Single(id, RpcTargetUse.Temp));
             }
         }
 
+        [Rpc(SendTo.Server)]
+        public void ElectGovernmentRpc(ulong electedPresidentId, ulong electedChancellorId)
+        {
+            if (isGovernmentEnacted) return;
+            presidentId = electedPresidentId;
+            chancellorId = electedChancellorId;
+            var (card1, card2, card3) = gameState.Policies.DrawThree();
+            SendPresidentToDrawRpc(card1, card2, card3, RpcTarget.Single(presidentId, RpcTargetUse.Temp));
+        }
+
+        [Rpc(SendTo.SpecifiedInParams)]
+        private void SendPresidentToDrawRpc(Alignment first, Alignment second, Alignment third, RpcParams rpcParams)
+        {
+            AllCanvas.ForEach(g => g.SetActive(false));
+            drawCanvas.SetActive(true);
+            drawSystem.SetPolicies(first, second, third);
+        }
+        
+        
         [Rpc(SendTo.Server)]
         public void EnactPolicyRpc(Alignment policy)
         {
@@ -35,7 +80,15 @@ namespace _2_Game
         [Rpc(SendTo.Server)]
         public void ForwardPoliciesRpc(Alignment policy1, Alignment policy2)
         {
-            
+            SendChancellorToDrawRpc(policy1, policy2, RpcTarget.Single(chancellorId, RpcTargetUse.Temp));
+        }
+        
+        [Rpc(SendTo.SpecifiedInParams)]
+        private void SendChancellorToDrawRpc(Alignment first, Alignment second, RpcParams rpcParams)
+        {
+            AllCanvas.ForEach(g => g.SetActive(false));
+            drawCanvas.SetActive(true);
+            drawSystem.SetPolicies(first, second);
         }
 
         [Rpc(SendTo.Server)]

@@ -7,8 +7,10 @@ using Utility;
 
 namespace _2_Game
 {
-    public class GovernmentSystem : MonoBehaviour
+    public class ElectionSystem : MonoBehaviour
     {
+        [SerializeField] private GameStateManager gameStateManager;
+
         [SerializeField] private List<Image> playerNames;
         [SerializeField] private Image confirmButton;
         [SerializeField] private TextMeshProUGUI confirmButtonText;
@@ -76,7 +78,7 @@ namespace _2_Game
 
         private void Confirm()
         {
-            // tell game state manager
+            gameStateManager.ElectGovernmentRpc((ulong)presidentId, (ulong)chancellorId);
             ResetState();
         }
 

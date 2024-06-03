@@ -1,21 +1,20 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using _2_Game;
 using TMPro;
 using Unity.Netcode;
 using UnityEngine;
 
-public class PlayerInfo : MonoBehaviour
+namespace _2_Game
 {
-    [SerializeField] private TextMeshProUGUI playerNameText;
-    [SerializeField] private TextMeshProUGUI alignmentText;
-    [SerializeField] private TextMeshProUGUI roleText;
-
-    [Rpc(SendTo.SpecifiedInParams)]
-    public void SetPlayerInfo(Alignment alignment, Role role, RpcSendParams sendParams)
+    public class PlayerInfo : NetworkBehaviour
     {
-        alignmentText.text = alignment.ToString();
-        roleText.text = role.ToString();
+        [SerializeField] private TextMeshProUGUI playerNameText;
+        [SerializeField] private TextMeshProUGUI alignmentText;
+        [SerializeField] private TextMeshProUGUI roleText;
+
+        [Rpc(SendTo.SpecifiedInParams)]
+        public void SetPlayerInfoRpc(Alignment alignment, Role role, RpcParams rpcParams)
+        {
+            alignmentText.text = alignment.ToString();
+            roleText.text = role.ToString();
+        }
     }
 }
