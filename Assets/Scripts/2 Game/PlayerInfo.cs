@@ -1,8 +1,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using TMPro;
+using Unity.Collections;
 using Unity.Netcode;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace _2_Game
 {
@@ -12,14 +14,15 @@ namespace _2_Game
         [SerializeField] private TextMeshProUGUI alignmentText;
         [SerializeField] private TextMeshProUGUI roleText;
 
-        [SerializeField] private List<TextMeshProUGUI> playerNames = new();
+        [SerializeField] private List<TextMeshProUGUI> playerNames;
+        [SerializeField] private List<Image> playerOutlines;
         
         [Rpc(SendTo.SpecifiedInParams)]
-        public void SetPlayerInfoRpc(Alignment alignment, Role role, RpcParams rpcParams)
+        public void SetPlayerInfoRpc(Alignment alignment, Role role, string playerName, int index, RpcParams rpcParams)
         {
             alignmentText.text = alignment.ToString().ToUpper();
             roleText.text = role.ToString().ToUpper();
-
+            playerNames[index].text = playerName;
             SetPlayerNames();
         }
 
@@ -33,6 +36,16 @@ namespace _2_Game
                 playerNames[i].text = player.PlayerName.Value.ToString();
                 if (player.IsOwner) playerNameText.text = player.PlayerName.Value.ToString();
             }
+        }
+        
+        // Called in a double nested for loop
+        // For every connected client
+        // For every player info
+        [Rpc(SendTo.SpecifiedInParams)]
+        public void SetPlayerRpc(int index, FixedString32Bytes playerName, Color color, RpcParams rpcParams)
+        {
+            playerNames[index].text = playerName.ToString();
+            playerOutlines[index].color = color;
         }
     }
 }

@@ -11,10 +11,11 @@ namespace _2_Game
     {
         private readonly Dictionary<ulong, Membership> memberships;
 
-        public Teams(IReadOnlyList<ulong> playerIds)
+        public Teams(IEnumerable<ulong> playerIds)
         {
+            var playerCount = playerIds.Count();
             var shuffledPlayerIds = playerIds.OrderBy(x => Random.value);
-            var (liberals, fascists) = LiberalsAndFascistCount(playerIds.Count);
+            var (liberals, fascists) = LiberalsAndFascistCount(playerCount);
 
             memberships = Enumerable.Repeat(new Membership(Alignment.Liberal, Role.Member), liberals)
                 .Concat(Enumerable.Repeat(new Membership(Alignment.Fascist, Role.Member), fascists))
@@ -27,7 +28,7 @@ namespace _2_Game
                 fascist.Role = Role.Hitler;
             }
             
-            Assert.AreEqual(memberships.Count, playerIds.Count);
+            Assert.AreEqual(memberships.Count, playerCount);
         }
 
         private static (int, int) LiberalsAndFascistCount(int playerCount)

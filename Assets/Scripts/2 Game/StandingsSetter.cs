@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace _2_Game
 {
-    public class StandingsSetter : MonoBehaviour
+    public class StandingsSetter : NetworkBehaviour
     {
         [SerializeField] private TextMeshProUGUI liberalPolicies;
         [SerializeField] private TextMeshProUGUI fascistPolicies;

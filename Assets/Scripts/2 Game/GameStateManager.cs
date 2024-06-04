@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using TMPro;
+using Unity.Collections;
 using Unity.Netcode;
 using UnityEngine;
 
@@ -10,6 +12,7 @@ namespace _2_Game
     {
         [SerializeField] private PlayerInfo playerInfo;
         [SerializeField] private StandingsSetter standingsSetter;
+        [SerializeField] private HistorySetter historySetter;
         private GameState gameState;
 
         private bool isGovernmentEnacted;
@@ -31,6 +34,10 @@ namespace _2_Game
 
         [SerializeField] private DrawSystem drawSystem;
 
+        [SerializeField] private Color liberalColor;
+        [SerializeField] private Color fascistColor;
+        [SerializeField] private Color hitlerColor;
+
         public override async void OnNetworkSpawn()
         {
             if (!NetworkManager.Singleton.IsHost)
@@ -44,13 +51,32 @@ namespace _2_Game
                 await Awaitable.NextFrameAsync();
             }
 
-            var playerIds = NetworkManager.Singleton.ConnectedClientsIds;
-            gameState = new GameState(playerIds);
+            IEnumerable<(ulong OwnerClientId, FixedString32Bytes playerName)> players = 
+                FindObjectsByType<Player>(FindObjectsSortMode.None)
+                    .Select(player => (player.OwnerClientId, player.PlayerName.Value));
+
+            gameState = new GameState(players);
+
             foreach (var (id, alignment, role) in gameState.Teams.AllPlayerInfo())
             {
-                playerInfo.SetPlayerInfoRpc(alignment, role, RpcTarget.Single(id, RpcTargetUse.Temp));
+                playerInfo.SetPlayerInfoRpc(alignment, role, gameState.GetName(id), (int)id, RpcTarget.Single(id, RpcTargetUse.Temp));
             }
-            
+
+            foreach (var (playerId, playerAlignment, playerRole) in gameState.Teams.AllPlayerInfo())
+            {
+                foreach (var (otherId, otherAlignment, otherRole) in gameState.Teams.AllPlayerInfo())
+                {
+                    Color color;
+                    if (playerAlignment == Alignment.Fascist &&
+                        otherAlignment == Alignment.Fascist && 
+                        playerRole == Role.Member)
+                        color = otherRole == Role.Hitler ? hitlerColor : fascistColor;
+                    else color = liberalColor;
+                    playerInfo.SetPlayerRpc((int)otherId, gameState.GetName(otherId), color,
+                        RpcTarget.Single(playerId, RpcTargetUse.Temp));
+                }
+            }
+
             AllCanvas.ForEach(g => g.SetActive(false));
             standingsCanvas.SetActive(true);
         }
@@ -79,6 +105,7 @@ namespace _2_Game
         {
             gameState.Policies.EnactPolicy(policy);
             standingsSetter.SetStandingRpc(policy, gameState.Policies.PoliciesCount(policy));
+            historySetter.AppendRpc(gameState.GetName(presidentId), gameState.GetName(chancellorId), policy);
         }
 
         [Rpc(SendTo.Server)]
