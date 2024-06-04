@@ -725,10 +725,10 @@ PlayerSettings:
   captureStartupLogs: {}
   activeInputHandler: 0
   windowsGamepadBackendHint: 0
-  cloudProjectId: 7d080450-6558-455e-9b33-acce61a6a760
+  cloudProjectId: 04fbc077-f099-4bc7-96dd-54779f9cca18
   framebufferDepthMemorylessMode: 0
   qualitySettingsNames: []
-  projectName: QR Join (1)
+  projectName: QR Join
   organizationId: william_heidemann
   cloudEnabled: 0
   legacyClampBlendShapeWeights: 0

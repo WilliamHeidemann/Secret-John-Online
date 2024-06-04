@@ -1645,6 +1645,7 @@ MonoBehaviour:
   image2: {fileID: 1687829159}
   image3: {fileID: 785589863}
   confirmButton: {fileID: 56039479}
+  description: {fileID: 1745287807}
 --- !u!1001 &437123351
 PrefabInstance:
   m_ObjectHideFlags: 0

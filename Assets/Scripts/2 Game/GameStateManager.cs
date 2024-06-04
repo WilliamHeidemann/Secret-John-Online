@@ -50,6 +50,9 @@ namespace _2_Game
             {
                 playerInfo.SetPlayerInfoRpc(alignment, role, RpcTarget.Single(id, RpcTargetUse.Temp));
             }
+            
+            AllCanvas.ForEach(g => g.SetActive(false));
+            standingsCanvas.SetActive(true);
         }
 
         [Rpc(SendTo.Server)]

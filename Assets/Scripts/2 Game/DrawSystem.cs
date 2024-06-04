@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using _2_Game;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using Utility;
@@ -15,6 +16,7 @@ public class DrawSystem : MonoBehaviour
     [SerializeField] private Image image2;
     [SerializeField] private Image image3;
     [SerializeField] private GameObject confirmButton;
+    [SerializeField] private TextMeshProUGUI description;
     
     private Alignment card1;
     private Alignment card2;
@@ -51,8 +53,8 @@ public class DrawSystem : MonoBehaviour
         image1.sprite = GetSprite(first);
         image2.sprite = GetSprite(second);
         image3.gameObject.SetActive(false);
+        description.text = "Pick 1";
         isPresident = false;
-        
         selected = new List<Alignment>();
         discarded = new List<Alignment> { card1, card2 };
     }
@@ -68,8 +70,8 @@ public class DrawSystem : MonoBehaviour
         image2.sprite = GetSprite(second);
         image3.sprite = GetSprite(third);
         image3.gameObject.SetActive(true);
+        description.text = "Pick 2";
         isPresident = true;
-        
         selected = new List<Alignment>();
         discarded = new List<Alignment> { card1, card2, card3 };
     }

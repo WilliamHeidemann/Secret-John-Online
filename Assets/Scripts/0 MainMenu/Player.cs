@@ -26,7 +26,10 @@ public class Player : NetworkBehaviour
         FindFirstObjectByType<NamesManager>()?.SetNameTag(defaultName);
         UpdateNameDisplays();
 
-        PlayerName.OnValueChanged += (value, newValue) => UpdateNameDisplays();
+        PlayerName.OnValueChanged += (value, newValue) =>
+        {
+            UpdateNameDisplays();
+        };
     }
 
     private static void UpdateNameDisplays() => FindFirstObjectByType<NamesManager>()?.UpdateNames();
