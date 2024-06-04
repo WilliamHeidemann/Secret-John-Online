@@ -28,7 +28,7 @@ namespace _2_Game
         {
             history[indexCounter].text = president.ToString();
             indexCounter++;
-        
+
             history[indexCounter].text = chancellor.ToString();
             indexCounter++;
 

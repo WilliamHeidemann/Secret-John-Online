@@ -9,6 +9,7 @@ namespace _2_Game
         public readonly Teams Teams;
         public readonly Policies Policies;
         private readonly Dictionary<ulong, string> playerNames;
+
         public GameState(IEnumerable<(ulong OwnerClientId, FixedString32Bytes playerName)> players)
         {
             var playerIds = players.Select(p => p.OwnerClientId);

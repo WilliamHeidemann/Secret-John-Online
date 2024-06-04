@@ -11,10 +11,11 @@
             Role = role;
         }
     }
+
     public enum Alignment
     {
         Liberal,
-        Fascist 
+        Fascist
     }
 
     public enum Role

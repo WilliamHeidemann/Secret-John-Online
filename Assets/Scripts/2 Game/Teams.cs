@@ -27,7 +27,7 @@ namespace _2_Game
                 var fascist = memberships.Values.First(membership => membership.Alignment == Alignment.Fascist);
                 fascist.Role = Role.Hitler;
             }
-            
+
             Assert.AreEqual(memberships.Count, playerCount);
         }
 
@@ -47,7 +47,7 @@ namespace _2_Game
                 .Where(pair => pair.Value.Alignment == Alignment.Fascist)
                 .Select(pair => pair.Key);
 
-        public IEnumerable<(ulong, Alignment, Role)> AllPlayerInfo() => 
+        public IEnumerable<(ulong, Alignment, Role)> AllPlayerInfo() =>
             memberships.Select(player => (player.Key, player.Value.Alignment, player.Value.Role));
     }
 }

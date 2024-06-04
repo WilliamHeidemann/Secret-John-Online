@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using _0_MainMenu;
 using TMPro;
 using Unity.Collections;
 using Unity.Netcode;
@@ -51,7 +52,7 @@ namespace _2_Game
                 await Awaitable.NextFrameAsync();
             }
 
-            IEnumerable<(ulong OwnerClientId, FixedString32Bytes playerName)> players = 
+            IEnumerable<(ulong OwnerClientId, FixedString32Bytes playerName)> players =
                 FindObjectsByType<Player>(FindObjectsSortMode.None)
                     .Select(player => (player.OwnerClientId, player.PlayerName.Value));
 
@@ -59,7 +60,8 @@ namespace _2_Game
 
             foreach (var (id, alignment, role) in gameState.Teams.AllPlayerInfo())
             {
-                playerInfo.SetPlayerInfoRpc(alignment, role, gameState.GetName(id), (int)id, RpcTarget.Single(id, RpcTargetUse.Temp));
+                playerInfo.SetPlayerInfoRpc(alignment, role, gameState.GetName(id), (int)id,
+                    RpcTarget.Single(id, RpcTargetUse.Temp));
             }
 
             foreach (var (playerId, playerAlignment, playerRole) in gameState.Teams.AllPlayerInfo())
@@ -68,7 +70,7 @@ namespace _2_Game
                 {
                     Color color;
                     if (playerAlignment == Alignment.Fascist &&
-                        otherAlignment == Alignment.Fascist && 
+                        otherAlignment == Alignment.Fascist &&
                         playerRole == Role.Member)
                         color = otherRole == Role.Hitler ? hitlerColor : fascistColor;
                     else color = liberalColor;

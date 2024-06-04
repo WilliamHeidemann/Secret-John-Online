@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using _0_MainMenu;
 using TMPro;
 using Unity.Collections;
 using Unity.Netcode;
@@ -16,7 +17,7 @@ namespace _2_Game
 
         [SerializeField] private List<TextMeshProUGUI> playerNames;
         [SerializeField] private List<Image> playerOutlines;
-        
+
         [Rpc(SendTo.SpecifiedInParams)]
         public void SetPlayerInfoRpc(Alignment alignment, Role role, string playerName, int index, RpcParams rpcParams)
         {
@@ -37,7 +38,7 @@ namespace _2_Game
                 if (player.IsOwner) playerNameText.text = player.PlayerName.Value.ToString();
             }
         }
-        
+
         // Called in a double nested for loop
         // For every connected client
         // For every player info

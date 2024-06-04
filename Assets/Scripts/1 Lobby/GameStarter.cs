@@ -8,7 +8,7 @@ using UnityEngine.SceneManagement;
 public class GameStarter : NetworkBehaviour
 {
     [SerializeField] private GameObject gameStarterButton;
-    
+
     private void Start()
     {
         if (!NetworkManager.Singleton.IsHost)
@@ -16,7 +16,7 @@ public class GameStarter : NetworkBehaviour
             gameStarterButton.SetActive(false);
         }
     }
-    
+
     public void StartGame()
     {
         if (!NetworkManager.Singleton.IsHost) return;

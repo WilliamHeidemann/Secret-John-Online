@@ -21,15 +21,15 @@ namespace _2_Game
         private int chancellorId;
 
         private const float ReducedAlphaValue = 0.2f;
-        
+
         private enum State
         {
             None,
             SelectPresident,
-            SelectChancellor, 
+            SelectChancellor,
             Confirm
         }
-        
+
         public void SelectPlayer(int index)
         {
             var playerBox = playerNames[index];
@@ -50,6 +50,7 @@ namespace _2_Game
                     confirmButtonText.text = "Select President";
                     return;
                 }
+
                 chancellorId = index;
                 playerBox.SetAlpha(ReducedAlphaValue);
                 state = State.Confirm;

@@ -39,10 +39,10 @@ public class GameConnector : MonoBehaviour
             print(e);
             throw;
         }
-
     }
-    
+
     [SerializeField] private int lobbySceneIndex;
+
     public async void StartHost()
     {
         await CreateAllocation();

@@ -9,6 +9,7 @@ public class InputFieldJoin : MonoBehaviour
     [SerializeField] private TMP_InputField inputField;
     [SerializeField] private GameObject arrow;
     [SerializeField] private GameConnector gameConnector;
+
     public void OnSelect()
     {
         if (inputField.text == "Join Game")
@@ -31,7 +32,7 @@ public class InputFieldJoin : MonoBehaviour
         {
             inputField.text = inputField.text[..6];
         }
-        
+
         arrow.SetActive(inputField.text.Length == 6);
     }
 

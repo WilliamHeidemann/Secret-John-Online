@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using _0_MainMenu;
 using TMPro;
 using Unity.Netcode;
 using UnityEngine;
@@ -15,7 +16,7 @@ public class NamesManager : NetworkBehaviour
     {
         inputField.text = nameTag;
     }
-    
+
     public void SetName()
     {
         var input = inputField.text;
@@ -30,7 +31,7 @@ public class NamesManager : NetworkBehaviour
             inputField.text = inputField.text[..10];
         }
     }
-    
+
     public void UpdateNames()
     {
         var players = FindObjectsByType<Player>(FindObjectsSortMode.None);

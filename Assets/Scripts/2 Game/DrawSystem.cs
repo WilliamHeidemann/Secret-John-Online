@@ -17,7 +17,7 @@ public class DrawSystem : MonoBehaviour
     [SerializeField] private Image image3;
     [SerializeField] private GameObject confirmButton;
     [SerializeField] private TextMeshProUGUI description;
-    
+
     private Alignment card1;
     private Alignment card2;
     private Alignment card3;
@@ -30,24 +30,24 @@ public class DrawSystem : MonoBehaviour
 
     private List<Alignment> selected;
     private List<Alignment> discarded;
-    
+
     private void ResetState()
     {
         isCard1Selected = false;
         isCard2Selected = false;
         isCard3Selected = false;
-        
+
         image1.SetAlpha(.5f);
         image2.SetAlpha(.5f);
         image3.SetAlpha(.5f);
-        
+
         confirmButton.SetActive(false);
     }
-    
+
     public void SetChancellorPolicies(Alignment first, Alignment second)
     {
         ResetState();
-        
+
         card1 = first;
         card2 = second;
         image1.sprite = GetSprite(first);
@@ -62,7 +62,7 @@ public class DrawSystem : MonoBehaviour
     public void SetPresidentPolicies(Alignment first, Alignment second, Alignment third)
     {
         ResetState();
-        
+
         card1 = first;
         card2 = second;
         card3 = third;
@@ -123,7 +123,7 @@ public class DrawSystem : MonoBehaviour
             selected.Remove(alignment);
             discarded.Add(alignment);
         }
-        
+
         if (isPresident) confirmButton.SetActive(selected.Count == 2);
         else confirmButton.SetActive(selected.Count == 1);
     }
@@ -148,7 +148,7 @@ public class DrawSystem : MonoBehaviour
     {
         var toDiscard = discarded.First();
         gameStateManager.DiscardPolicyRpc(toDiscard);
-        
+
         var toSelect = selected.First();
         gameStateManager.EnactPolicyRpc(toSelect);
     }

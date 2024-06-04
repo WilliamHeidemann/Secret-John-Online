@@ -1,42 +1,36 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using TMPro;
 using Unity.Collections;
 using Unity.Netcode;
-using UnityEngine;
 
-public class Player : NetworkBehaviour
+namespace _0_MainMenu
 {
-    public readonly NetworkVariable<FixedString32Bytes> PlayerName = new();
-    private void Awake()
+    public class Player : NetworkBehaviour
     {
-        DontDestroyOnLoad(gameObject);
-    }
-
-    public override void OnNetworkSpawn()
-    {
-        const string defaultName = "New Player";
-
-        if (IsServer)
+        public readonly NetworkVariable<FixedString32Bytes> PlayerName = new(readPerm: NetworkVariableReadPermission.Everyone, writePerm: NetworkVariableWritePermission.Server);
+        private void Awake()
         {
-            PlayerName.Value = defaultName;
+            DontDestroyOnLoad(gameObject);
         }
-        
-        FindFirstObjectByType<NamesManager>()?.SetNameTag(defaultName);
-        UpdateNameDisplays();
 
-        PlayerName.OnValueChanged += (value, newValue) =>
+        public override void OnNetworkSpawn()
         {
-            UpdateNameDisplays();
-        };
-    }
+            const string defaultName = "New Player";
+            PlayerName.OnValueChanged += UpdateNameDisplays;
 
-    private static void UpdateNameDisplays() => FindFirstObjectByType<NamesManager>()?.UpdateNames();
+            if (IsServer)
+            {
+                PlayerName.Value = defaultName;
+            }
+        
+            FindFirstObjectByType<NamesManager>()?.SetNameTag(defaultName);
+            UpdateNameDisplays("", "");
+        }
 
-    [Rpc(SendTo.Server)]
-    public void ChangeNameRpc(string newName)
-    {
-        PlayerName.Value = newName;
+        private static void UpdateNameDisplays(FixedString32Bytes oldName, FixedString32Bytes newName) => FindFirstObjectByType<NamesManager>()?.UpdateNames();
+
+        [Rpc(SendTo.Server)]
+        public void ChangeNameRpc(string newName)
+        {
+            PlayerName.Value = newName;
+        }
     }
 }
