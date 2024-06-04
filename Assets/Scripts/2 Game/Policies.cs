@@ -22,7 +22,7 @@ namespace _2_Game
 
             for (var i = 0; i < 6; i++)
                 discardPile.Add(Alignment.Liberal);
-            
+
             ReShuffle();
         }
 
@@ -64,5 +64,8 @@ namespace _2_Game
             if (policy == Alignment.Liberal) enactedLiberalPolicies++;
             else enactedFascistPolicies++;
         }
+
+        public int PoliciesCount(Alignment alignment) =>
+            alignment == Alignment.Liberal ? enactedLiberalPolicies : enactedFascistPolicies;
     }
 }

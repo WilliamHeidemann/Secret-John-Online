@@ -29,8 +29,23 @@ public class DrawSystem : MonoBehaviour
     private List<Alignment> selected;
     private List<Alignment> discarded;
     
-    public void SetPolicies(Alignment first, Alignment second)
+    private void ResetState()
     {
+        isCard1Selected = false;
+        isCard2Selected = false;
+        isCard3Selected = false;
+        
+        image1.SetAlpha(.5f);
+        image2.SetAlpha(.5f);
+        image3.SetAlpha(.5f);
+        
+        confirmButton.SetActive(false);
+    }
+    
+    public void SetChancellorPolicies(Alignment first, Alignment second)
+    {
+        ResetState();
+        
         card1 = first;
         card2 = second;
         image1.sprite = GetSprite(first);
@@ -42,8 +57,10 @@ public class DrawSystem : MonoBehaviour
         discarded = new List<Alignment> { card1, card2 };
     }
 
-    public void SetPolicies(Alignment first, Alignment second, Alignment third)
+    public void SetPresidentPolicies(Alignment first, Alignment second, Alignment third)
     {
+        ResetState();
+        
         card1 = first;
         card2 = second;
         card3 = third;
@@ -96,13 +113,13 @@ public class DrawSystem : MonoBehaviour
         var alignment = GetAlignment(index);
         if (IsSelected(index))
         {
-            selected.Remove(alignment);
-            discarded.Add(alignment);
+            selected.Add(alignment);
+            discarded.Remove(alignment);
         }
         else
         {
-            selected.Add(alignment);
-            discarded.Remove(alignment);
+            selected.Remove(alignment);
+            discarded.Add(alignment);
         }
         
         if (isPresident) confirmButton.SetActive(selected.Count == 2);

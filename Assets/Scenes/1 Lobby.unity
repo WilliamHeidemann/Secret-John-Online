@@ -919,7 +919,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7062720211802695352, guid: 337c920fabd78f645a16a03f6e07a459, type: 3}
       propertyPath: m_Text
-      value: Player 1
+      value: New Player
       objectReference: {fileID: 0}
     - target: {fileID: 7062720211802695352, guid: 337c920fabd78f645a16a03f6e07a459, type: 3}
       propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.size
@@ -2489,7 +2489,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9272f26d407cf584ea13211e1d0445c9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gameSceneIndex: 2
   gameStarterButton: {fileID: 1508847397}
 --- !u!1 &1988025908
 GameObject:

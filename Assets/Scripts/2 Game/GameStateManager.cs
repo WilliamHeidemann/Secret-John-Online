@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using TMPro;
 using Unity.Netcode;
 using UnityEngine;
 
@@ -8,8 +9,9 @@ namespace _2_Game
     public class GameStateManager : NetworkBehaviour
     {
         [SerializeField] private PlayerInfo playerInfo;
+        [SerializeField] private StandingsSetter standingsSetter;
         private GameState gameState;
-        
+
         private bool isGovernmentEnacted;
         private ulong presidentId;
         private ulong chancellorId;
@@ -26,9 +28,9 @@ namespace _2_Game
             standingsCanvas,
             historyCanvas
         };
-        
+
         [SerializeField] private DrawSystem drawSystem;
-    
+
         public override async void OnNetworkSpawn()
         {
             if (!NetworkManager.Singleton.IsHost)
@@ -36,14 +38,12 @@ namespace _2_Game
                 gameObject.SetActive(false);
                 return;
             }
-            
-            playersCanvas.SetActive(true);
+
             while (!playerInfo.IsSpawned)
             {
                 await Awaitable.NextFrameAsync();
             }
-            print($"Is playerinfo spawned? {playerInfo.IsSpawned}");
-            
+
             var playerIds = NetworkManager.Singleton.ConnectedClientsIds;
             gameState = new GameState(playerIds);
             foreach (var (id, alignment, role) in gameState.Teams.AllPlayerInfo())
@@ -67,14 +67,15 @@ namespace _2_Game
         {
             AllCanvas.ForEach(g => g.SetActive(false));
             drawCanvas.SetActive(true);
-            drawSystem.SetPolicies(first, second, third);
+            drawSystem.SetPresidentPolicies(first, second, third);
         }
-        
-        
+
+
         [Rpc(SendTo.Server)]
         public void EnactPolicyRpc(Alignment policy)
         {
             gameState.Policies.EnactPolicy(policy);
+            standingsSetter.SetStandingRpc(policy, gameState.Policies.PoliciesCount(policy));
         }
 
         [Rpc(SendTo.Server)]
@@ -82,13 +83,13 @@ namespace _2_Game
         {
             SendChancellorToDrawRpc(policy1, policy2, RpcTarget.Single(chancellorId, RpcTargetUse.Temp));
         }
-        
+
         [Rpc(SendTo.SpecifiedInParams)]
         private void SendChancellorToDrawRpc(Alignment first, Alignment second, RpcParams rpcParams)
         {
             AllCanvas.ForEach(g => g.SetActive(false));
             drawCanvas.SetActive(true);
-            drawSystem.SetPolicies(first, second);
+            drawSystem.SetChancellorPolicies(first, second);
         }
 
         [Rpc(SendTo.Server)]
