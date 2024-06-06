@@ -39,6 +39,12 @@ namespace _2_Game
         [SerializeField] private Color fascistColor;
         [SerializeField] private Color hitlerColor;
 
+        private void Start()
+        {
+            AllCanvas.ForEach(g => g.SetActive(false));
+            standingsCanvas.SetActive(true);
+        }
+
         public override async void OnNetworkSpawn()
         {
             if (!NetworkManager.Singleton.IsHost)
@@ -78,9 +84,6 @@ namespace _2_Game
                         RpcTarget.Single(playerId, RpcTargetUse.Temp));
                 }
             }
-
-            AllCanvas.ForEach(g => g.SetActive(false));
-            standingsCanvas.SetActive(true);
         }
 
         [Rpc(SendTo.Server)]

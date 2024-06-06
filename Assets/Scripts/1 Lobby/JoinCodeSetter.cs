@@ -1,14 +1,16 @@
-using System.Collections;
-using System.Collections.Generic;
+using _0_MainMenu;
 using TMPro;
 using UnityEngine;
 
-public class JoinCodeSetter : MonoBehaviour
+namespace _1_Lobby
 {
-    [SerializeField] private TextMeshProUGUI joinCode;
-
-    void Start()
+    public class JoinCodeSetter : MonoBehaviour
     {
-        joinCode.text = GameConnector.JoinCode;
+        [SerializeField] private TextMeshProUGUI joinCode;
+
+        void Start()
+        {
+            joinCode.text = GameConnector.JoinCode;
+        }
     }
 }
