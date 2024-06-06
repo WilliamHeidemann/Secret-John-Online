@@ -27,18 +27,18 @@ namespace _1_Lobby
         public void RestrictLength()
         {
             if (inputField.text.Length > 10)
-            {
                 inputField.text = inputField.text[..10];
-            }
         }
 
         public void UpdateNames()
         {
-            var players = FindObjectsByType<Player>(FindObjectsSortMode.None);
-            for (int i = 0; i < players.Length; i++)
-            {
+            var players = 
+                FindObjectsByType<Player>(FindObjectsSortMode.None)
+                .OrderBy(player => player.OwnerClientId)
+                .ToList();
+
+            for (var i = 0; i < players.Count; i++)
                 names[i].text = players[i].PlayerName.Value.ToString();
-            }
         }
     }
 }

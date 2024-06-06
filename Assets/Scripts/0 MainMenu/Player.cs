@@ -8,17 +8,9 @@ namespace _0_MainMenu
     {
         public readonly NetworkVariable<FixedString32Bytes> PlayerName = new("Some Name");
 
-        private void Awake()
-        {
-            DontDestroyOnLoad(gameObject);
-        }
+        private void Awake() => DontDestroyOnLoad(gameObject);
 
-        public override void OnNetworkSpawn()
-        {
-            FindFirstObjectByType<NamesManager>()?.SetNameTag("New Player");
-            PlayerName.OnValueChanged += UpdateNameDisplays;
-            UpdateNameDisplays("", "");
-        }
+        public override void OnNetworkSpawn() => PlayerName.OnValueChanged += UpdateNameDisplays;
 
         private static void UpdateNameDisplays(FixedString32Bytes oldName, FixedString32Bytes newName) =>
             FindFirstObjectByType<NamesManager>()?.UpdateNames();
