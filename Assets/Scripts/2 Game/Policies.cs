@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using NUnit.Framework;
+using UnityEngine;
 using Random = UnityEngine.Random;
 
 namespace _2_Game
@@ -31,10 +32,9 @@ namespace _2_Game
             var cards = new List<Alignment>();
             while (cards.Count < 3)
             {
-                if (drawPile.Count == 0) ReShuffle();
+                if (drawPile.Count == 0) ReShuffle(); // De nederste kort kommer øverst i bunken og bliver trukket
                 var topCard = drawPile.Pop();
                 cards.Add(topCard);
-                discardPile.Add(topCard);
             }
 
             return (cards[0], cards[1], cards[2]);
@@ -52,6 +52,8 @@ namespace _2_Game
             {
                 drawPile.Push(card);
             }
+
+            discardPile.Clear();
         }
 
         public void Discard(Alignment card)

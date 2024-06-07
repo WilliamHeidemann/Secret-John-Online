@@ -17,8 +17,9 @@ namespace _2_Game
             var shuffledPlayerIds = playerIds.OrderBy(x => Random.value);
             var (liberals, fascists) = LiberalsAndFascistCount(playerCount);
 
-            memberships = Enumerable.Repeat(new Membership(Alignment.Liberal, Role.Member), liberals)
-                .Concat(Enumerable.Repeat(new Membership(Alignment.Fascist, Role.Member), fascists))
+            memberships = Enumerable.Range(0, liberals)
+                .Select(_ => new Membership(Alignment.Liberal, Role.Member))
+                .Concat(Enumerable.Range(0, fascists).Select(_ => new Membership(Alignment.Fascist, Role.Member)))
                 .Zip(shuffledPlayerIds, (membership, id) => (membership, id))
                 .ToDictionary(tuple => tuple.id, tuple => tuple.membership);
 
