@@ -18,7 +18,7 @@ namespace _0_MainMenu
         private UnityTransport transport;
         [SerializeField] private QrJoin qrJoinButton;
         [SerializeField] private InputFieldJoin inputFieldJoin;
-
+        [SerializeField] private GameObject spinnerPanel;
         private async void Awake()
         {
             DontDestroyOnLoad(this);
@@ -44,9 +44,11 @@ namespace _0_MainMenu
 
         public async void StartHost()
         {
+            spinnerPanel.SetActive(true);
             await CreateAllocation();
             NetworkManager.Singleton.StartHost();
             NetworkManager.Singleton.SceneManager.LoadScene("1 Lobby", LoadSceneMode.Single);
+            spinnerPanel.SetActive(false);
         }
 
         private async Task CreateAllocation()
@@ -62,11 +64,13 @@ namespace _0_MainMenu
         {
             try
             {
+                spinnerPanel.SetActive(true);
                 var allocation = await RelayService.Instance.JoinAllocationAsync(code);
                 JoinGameAsClient(allocation, code);
             }
             catch (Exception e)
             {
+                spinnerPanel.SetActive(false);
                 print(e);
                 throw;
             }
