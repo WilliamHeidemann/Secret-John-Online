@@ -963,7 +963,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7821182931081831052, guid: 337c920fabd78f645a16a03f6e07a459, type: 3}
       propertyPath: m_text
-      value: "Player 1\u200B"
+      value: "New Player\u200B"
       objectReference: {fileID: 0}
     - target: {fileID: 7821182931081831052, guid: 337c920fabd78f645a16a03f6e07a459, type: 3}
       propertyPath: m_fontSize

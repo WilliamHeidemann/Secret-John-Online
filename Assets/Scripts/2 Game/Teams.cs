@@ -27,8 +27,6 @@ namespace _2_Game
                 var fascist = memberships.Values.First(membership => membership.Alignment == Alignment.Fascist);
                 fascist.Role = Role.Hitler;
             }
-
-            Assert.AreEqual(memberships.Count, playerCount);
         }
 
         private static (int, int) LiberalsAndFascistCount(int playerCount)
