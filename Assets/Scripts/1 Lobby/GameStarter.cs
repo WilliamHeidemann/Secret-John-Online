@@ -22,7 +22,7 @@ namespace _1_Lobby
             StartGameRpc();
         }
 
-        [Rpc(SendTo.ClientsAndHost)]
+        [Rpc(SendTo.Server)]
         private void StartGameRpc()
         {
             NetworkManager.Singleton.SceneManager.LoadScene("2 Game", LoadSceneMode.Single);
