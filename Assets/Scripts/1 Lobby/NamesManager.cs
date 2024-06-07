@@ -12,6 +12,15 @@ namespace _1_Lobby
         [SerializeField] private TMP_InputField inputField;
         [SerializeField] private List<TextMeshProUGUI> names;
 
+        public override void OnNetworkSpawn()
+        {
+            var players = FindObjectsByType<Player>(FindObjectsSortMode.None);
+            foreach (var player in players)
+            {
+                names[(int)player.OwnerClientId].text = player.PlayerName.Value.ToString();
+            }
+        }
+
         public void SetNameTag(string nameTag)
         {
             inputField.text = nameTag;
@@ -21,7 +30,11 @@ namespace _1_Lobby
         {
             var input = inputField.text;
             var players = FindObjectsByType<Player>(FindObjectsSortMode.None);
-            players.First(player => player.IsOwner).ChangeNameRpc(input);
+            var owner = players.First(player => player.IsOwner);
+            var index = (int)owner.OwnerClientId;
+            print(index);
+            names[index].text = input;
+            owner.ChangeNameRpc(input);
         }
 
         public void RestrictLength()
@@ -30,15 +43,10 @@ namespace _1_Lobby
                 inputField.text = inputField.text[..10];
         }
 
-        public void UpdateNames()
+        public void UpdateName(string newName, int index)
         {
-            var players = 
-                FindObjectsByType<Player>(FindObjectsSortMode.None)
-                .OrderBy(player => player.OwnerClientId)
-                .ToList();
-
-            for (var i = 0; i < players.Count; i++)
-                names[i].text = players[i].PlayerName.Value.ToString();
+            print(index);
+            names[index].text = newName;
         }
     }
 }

@@ -12,8 +12,8 @@ namespace _0_MainMenu
 
         public override void OnNetworkSpawn() => PlayerName.OnValueChanged += UpdateNameDisplays;
 
-        private static void UpdateNameDisplays(FixedString32Bytes oldName, FixedString32Bytes newName) =>
-            FindFirstObjectByType<NamesManager>()?.UpdateNames();
+        private void UpdateNameDisplays(FixedString32Bytes oldName, FixedString32Bytes newName) =>
+            FindFirstObjectByType<NamesManager>()?.UpdateName(newName.ToString(), (int)OwnerClientId);
 
         [Rpc(SendTo.Server)]
         public void ChangeNameRpc(string newName)
