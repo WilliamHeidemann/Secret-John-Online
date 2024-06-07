@@ -78,7 +78,6 @@ namespace _0_MainMenu
             transport.UseWebSockets = true;
             JoinCode = code;
             NetworkManager.Singleton.StartClient();
-            NetworkManager.Singleton.SceneManager.LoadScene("1 Lobby", LoadSceneMode.Single);
         }
 
         // Method is called via javascript in browser
